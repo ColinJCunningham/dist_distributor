@@ -15,23 +15,25 @@ export default function ChartKey() {
     color: theme.palette.text.secondary,
   }));
 
+  // const COLORS = ["#1f2a47", "#EF8C1A", "#034732", "#AB3428"];
+
   return (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={6}>
         <Item
           style={{
-            backgroundColor: "#23967f",
-            color: "black",
+            backgroundColor: "#384B80",
+            color: "white",
             fontWeight: "700",
           }}>
-          Completed
+          Not Started
         </Item>
       </Grid>
       <Grid item xs={6}>
         <Item
           style={{
-            backgroundColor: "#8AA3FF",
-            color: "black",
+            backgroundColor: "#EF8C1A",
+            color: "white",
             fontWeight: "700",
           }}>
           Checked Out
@@ -40,17 +42,17 @@ export default function ChartKey() {
       <Grid item xs={6}>
         <Item
           style={{
-            backgroundColor: "#FFBB28",
-            color: "black",
+            backgroundColor: "#034732",
+            color: "white",
             fontWeight: "700",
           }}>
-          On Hold
+          Completed
         </Item>
       </Grid>
       <Grid item xs={6}>
         <Item
           style={{
-            backgroundColor: "#E1143A",
+            backgroundColor: "#AB3428",
             color: "white",
             fontWeight: "700",
           }}>

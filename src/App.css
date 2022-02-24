@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #BEC3C6;
+  background-color: #bec3c6;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -9,10 +9,10 @@
   }
 }
 
-
 @font-face {
   font-family: "straight";
-  src: local("straight"), url(../src/Assets/Fonts/straight.ttf) format("truetype");
+  src: local("straight"),
+    url(../src/Assets/Fonts/straight.ttf) format("truetype");
 }
 
 @font-face {
@@ -23,4 +23,9 @@
 @font-face {
   font-family: "cursive";
   src: local("cursive"), url(../src/Assets/Fonts/cursive.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "big";
+  src: local("big"), url(../src/Assets/Fonts/big.ttf) format("truetype");
 }

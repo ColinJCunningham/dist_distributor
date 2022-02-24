@@ -21,16 +21,16 @@ import Typography from "@mui/material/Typography";
 import ChartKey from "./list";
 
 const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 200 },
-  { name: "Group D", value: 100 },
+  { name: "New", value: 400 },
+  { name: "Checked Out", value: 300 },
+  { name: "Completed", value: 200 },
+  { name: "Aged Requests", value: 100 },
 ];
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-const COLORS = ["#23967f", "#FFBB28", "#8AA3FF", "#E1143A"];
+const COLORS = ["#384B80", "#EF8C1A", "#034732", "#AB3428"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -50,7 +50,7 @@ const renderCustomizedLabel = ({
     <text
       x={x}
       y={y}
-      fill='black'
+      fill='white'
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline='central'>
       {`${(percent * 100).toFixed(0)}%` === "0%"
@@ -86,7 +86,7 @@ export default function Chart() {
           <PieChart width={800} height={400}>
             <Pie
               data={data}
-              outerRadius={100}
+              outerRadius={120}
               labelLine={false}
               label={renderCustomizedLabel}
               dataKey='value'>

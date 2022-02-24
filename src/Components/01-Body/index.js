@@ -17,10 +17,12 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Chart from "../01-Body/Nav_Components/piechart";
+import RowOne from "../01-Body/Body_Components/Row_One/main";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import ListItemButton from "@mui/material/ListItemButton";
 import Checkbox from "@mui/material/Checkbox";
+import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
 
@@ -100,10 +102,19 @@ export default function MainDrawer() {
 
   const [array, setArray] = React.useState(["All mail", "Trash", "Spam"]);
 
+  const spacer = {
+    width: "100%",
+    height: "5px",
+    backgroundColor: "#1f2a47",
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar
-        style={{ backgroundColor: "#0f0e0e", position: "absolute" }}
+        style={{
+          backgroundColor: "#4e5e88",
+          color: "whitesmoke",
+        }}
         open={open}>
         <Toolbar>
           <IconButton
@@ -111,24 +122,37 @@ export default function MainDrawer() {
             aria-label='open drawer'
             onClick={handleDrawerOpen}
             edge='start'
-            sx={{ mr: 2, ...(open && { display: "none" }) }}>
+            sx={{ mr: 2, ...(open && { opacity: "90%", color: "#1f2a47" }) }}>
             <MenuIcon />
           </IconButton>
           <Typography
             style={{
               fontFamily: "fancy, serif",
-              textEmphasis: "700",
+              fontWeight: "900",
               flexGrow: 2,
-              padding: "1%",
+              color: "#bfd1e5",
+              height: "inherit",
+              width: "fit-content",
+              textDecoration: "underline",
+              color: "#fbf5f3",
             }}
-            variant='h3'
-            component='div'>
+            variant='h4'>
             DISTRIBUTION DISPENSER
           </Typography>
+          <Button
+            style={{
+              fontFamily: "fancy, serif",
+              fontWeight: "900",
+              border: "solid 1px #fbf5f3",
+              color: "#fbf5f3",
+            }}
+            color='inherit'>
+            Refresh Data
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
-        style={{ height: "70%", backgroundColor: "#720e07", marginTop: "10%" }}
+        style={{ height: "70%", backgroundColor: "#bfd1e5", marginTop: "10%" }}
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -137,7 +161,7 @@ export default function MainDrawer() {
             width: drawerWidth,
             boxSizing: "border-box",
             maxHeight: "100%",
-            backgroundColor: "#45050c",
+            backgroundColor: "#1F2A47",
           },
         }}
         variant='persistent'
@@ -150,9 +174,7 @@ export default function MainDrawer() {
                 margin: "0 auto",
                 fontFamily: "fancy, serif",
                 textEmphasis: "bold",
-                paddingTop: "1%",
-                color: "#bec3c6",
-                paddingTop: "4%",
+                color: "#fbf5f3",
                 textAlign: "left",
               }}>
               Current Workload
@@ -162,7 +184,7 @@ export default function MainDrawer() {
               style={{
                 textAlign: "center",
                 width: "auto",
-                color: "#F57A89",
+                color: "#e9f1f7",
                 fontFamily: "fancy, serif",
               }}
               onClick={handleDrawerClose}>
@@ -177,20 +199,26 @@ export default function MainDrawer() {
             marginTop: "5%",
           }}
         />
-        <div style={{ padding: "1rem", backgroundColor: "#bec3c6" }}>
+        <div style={{ padding: "1rem", backgroundColor: "#e9f1f7aa" }}>
           <Chart />
         </div>
         <Divider
           style={{ borderTop: "3px double #bec3c6", color: "#bec3c6" }}
         />
         <List>
-          {array.map((value, text, index) => (
-            <ListItem button key={text}>
+          {array.map((value, index, text) => (
+            <ListItem
+              onClick={(e) => console.log(index)}
+              style={{
+                borderBottom: "2px double white",
+                backgroundColor: `${index % 2 == 0 ? "#1F2A47" : "#4e5e88"}`,
+              }}
+              button
+              key={index}>
               <ListItemButton
                 role={undefined}
                 onClick={handleToggle(value)}
                 dense>
-                ,
                 <ListItemIcon>
                   <Checkbox
                     edge='start'
@@ -211,65 +239,24 @@ export default function MainDrawer() {
           ))}
         </List>
       </Drawer>
-      <Main open={open}>
+      <Main style={{ marginTop: "5%" }} open={open}>
         <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <div style={spacer} />
+        <Stack>
+          <RowOne />
+          <Paper
+            style={{
+              minHeight: "20rem",
+              backgroundColor: "transparent",
+            }}
+            variant='outlined'
+            elevation={3}
+            square>
+            {" "}
+          </Paper>
+          <div style={spacer} />
+        </Stack>
       </Main>
     </Box>
   );
 }
-
-// <Box style={{ marginTop: "5%", textAlign: "center" }}>
-//   <div style={{ textAlign: "center", position: "sticky" }}>
-//     <div
-//       style={{
-//         backgroundColor: "#45050c",
-//         maxWidth: "25%",
-//         borderTopRightRadius: "1rem",
-//         borderBottomRightRadius: "1rem",
-//       }}>
-//       <Chart />
-//     </div>
-//     <Grid
-//       item
-//       xs={10}
-//       sm={10}
-//       md={7}
-//       lg={7}
-//       style={{ width: "100%", paddingRight: "0", marginLeft: "4%" }}>
-//       <Item style={{ backgroundColor: "#e9f1f7", color: "black" }}>
-//         <div style={{ minHeight: "10rem", paddingTop: "4%" }}>Hello</div>
-//         <div style={{ minHeight: "10rem", paddingTop: "4%" }}>Hello</div>
-//         <div style={{ minHeight: "10rem", paddingTop: "4%" }}>Hello</div>
-//       </Item>
-//     </Grid>
-//   </div>
-// </Box>

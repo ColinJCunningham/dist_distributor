@@ -5,7 +5,7 @@ import MainDrawer from "./Components/01-Body/index";
 
 function App() {
   return (
-    <div className='App'>
+    <div style={{ backgroundColor: "#bfd1e5" }} className='App'>
       <MainDrawer />
       <Footer />
     </div>
