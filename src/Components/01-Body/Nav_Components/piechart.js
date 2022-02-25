@@ -1,5 +1,22 @@
 import React from "react";
-import { PieChart, Pie, ResponsiveContainer, Cell } from "recharts";
+import {
+	PieChart,
+	Pie,
+	Legend,
+	Tooltip,
+	ResponsiveContainer,
+	Cell,
+} from "recharts";
+import { styled } from "@mui/material/styles";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ChartKey from "./list";
 
@@ -9,6 +26,9 @@ const data = [
 	{ name: "Completed", value: 200 },
 	{ name: "Aged Requests", value: 100 },
 ];
+const Demo = styled("div")(({ theme }) => ({
+	backgroundColor: theme.palette.background.paper,
+}));
 
 const COLORS = ["#384B80", "#EF8C1A", "#034732", "#AB3428"];
 
@@ -41,6 +61,8 @@ const renderCustomizedLabel = ({
 };
 
 export default function Chart() {
+	const [dense, setDense] = React.useState(false);
+	const [secondary, setSecondary] = React.useState(false);
 	return (
 		<div
 			style={{

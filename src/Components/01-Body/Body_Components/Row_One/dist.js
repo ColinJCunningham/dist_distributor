@@ -5,9 +5,11 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 
+import db from "../../../../Util/firebase";
+
 export default function NewDistribution() {
 	const { register, handleSubmit } = useForm();
-	const [data, setData] = useState("");
+	const [data, setData] = useState();
 	const inputStyle = {
 		marginBottom: "3%",
 		color: "#1f2a47",
@@ -17,9 +19,29 @@ export default function NewDistribution() {
 		backgroundColor: "#fbf5f3",
 		borderRadius: "5px",
 	};
+
+	const onSubmit = (data, e) => {
+		e.preventDefault();
+
+		// Add data to the store
+		db.collection("data")
+			.add({
+				participantName: data.name,
+				planName: data.planName,
+				tpaID: data.tpaID,
+				status: "New",
+			})
+			.then((docRef) => {
+				alert("Data Successfully Submitted");
+			})
+			.catch((error) => {
+				console.error("Error adding document: ", error);
+			});
+	};
+
 	return (
 		<Paper
-			onClick={(e) => console.log(1)}
+			onClick={(e) => console.log(data)}
 			style={{
 				minHeight: "15rem",
 				maxHeight: "20rem",
@@ -36,7 +58,7 @@ export default function NewDistribution() {
 				style={{
 					padding: "1%",
 				}}
-				onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}>
+				onSubmit={handleSubmit(onSubmit)}>
 				<div
 					style={{
 						padding: "2%",
@@ -55,7 +77,7 @@ export default function NewDistribution() {
 					<input
 						style={inputStyle}
 						label='Full Name'
-						{...register("firstName")}
+						{...register("name")}
 						placeholder='Participant Name'
 					/>
 					<input
@@ -67,7 +89,7 @@ export default function NewDistribution() {
 					<input
 						style={inputStyle}
 						label='TPAID'
-						{...register("tpaid")}
+						{...register("tpaID")}
 						placeholder='TPA ID'
 					/>
 

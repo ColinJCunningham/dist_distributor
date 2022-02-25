@@ -18,8 +18,8 @@ export default function RowTwo() {
 			/>
 			<ListTemplate
 				title='Checked Out'
-				primary='#A87811'
-				secondary='#F9EAC7'
+				primary='#F9EAC7'
+				secondary='#A87811'
 				text='Click To Complete'
 			/>
 			<ListTemplate
