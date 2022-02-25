@@ -29,3 +29,8 @@
   font-family: "big";
   src: local("big"), url(../src/Assets/Fonts/big.ttf) format("truetype");
 }
+
+@font-face {
+  font-family: "bold";
+  src: local("bold"), url(../src/Assets/Fonts/bold.ttf) format("truetype");
+}

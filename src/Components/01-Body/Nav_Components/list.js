@@ -16,7 +16,6 @@ export default function ChartKey() {
   }));
 
   // const COLORS = ["#1f2a47", "#EF8C1A", "#034732", "#AB3428"];
-
   return (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={6}>
