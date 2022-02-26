@@ -1,15 +1,18 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 
 import db from "../../../../Util/firebase";
+import Moment from "moment";
 
 export default function NewDistribution() {
 	const { register, handleSubmit } = useForm();
 	const [data, setData] = useState();
+	const [change, setChange] = useState(0);
+
 	const inputStyle = {
 		marginBottom: "3%",
 		color: "#1f2a47",
@@ -20,9 +23,11 @@ export default function NewDistribution() {
 		borderRadius: "5px",
 	};
 
-	const onSubmit = (data, e) => {
-		e.preventDefault();
+	let currentDate = new Date();
 
+	useEffect(() => {}, [change]);
+
+	const onSubmit = (data) => {
 		// Add data to the store
 		db.collection("data")
 			.add({
@@ -30,9 +35,11 @@ export default function NewDistribution() {
 				planName: data.planName,
 				tpaID: data.tpaID,
 				status: "New",
+				entryDate: Date.now(),
 			})
 			.then((docRef) => {
 				alert("Data Successfully Submitted");
+				setChange(2);
 			})
 			.catch((error) => {
 				console.error("Error adding document: ", error);
@@ -92,7 +99,6 @@ export default function NewDistribution() {
 						{...register("tpaID")}
 						placeholder='TPA ID'
 					/>
-
 					<input
 						style={{
 							marginTop: "2%",

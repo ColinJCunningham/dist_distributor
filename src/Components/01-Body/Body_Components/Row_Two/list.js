@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
 export default function ListTemplate(props) {
-	console.log(props);
 	const primarycolor = props.primary;
 	const secondarycolor = props.secondary;
 	const [array, setArray] = React.useState(["All mail", "Trash", "Spam"]);

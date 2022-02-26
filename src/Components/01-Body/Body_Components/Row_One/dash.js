@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -15,13 +15,36 @@ import Button from "@mui/material/Button";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
+import db from "../../../../Util/firebase";
+import Moment from "moment";
 
 export default function Dash() {
 	const [array, setArray] = React.useState(["All mail", "Trash", "Spam"]);
+	const [aged, setAged] = React.useState([]);
+
+	const currentDate = Moment().format("MM - DD - YYYY");
+
+	const fetchAged = async () => {
+		db.collection("data")
+			.where("status", "==", `New`)
+			.get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					console.log(doc.data());
+					// console.log(doc.id, " => ", doc.data());
+				});
+			})
+			.catch((error) => {
+				console.log("Error getting documents: ", error);
+			});
+	};
+
+	useEffect(() => {
+		fetchAged();
+	}, []);
 
 	return (
 		<div
-			onClick={(e) => console.log(1)}
 			style={{
 				minHeight: "20rem",
 				backgroundColor: "transparent",
