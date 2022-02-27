@@ -15,36 +15,18 @@ import Button from "@mui/material/Button";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import db from "../../../../Util/firebase";
+import db from "./firebase";
 import Moment from "moment";
 
-export default function Dash() {
+export default function Dash(props) {
 	const [array, setArray] = React.useState(["All mail", "Trash", "Spam"]);
-	const [aged, setAged] = React.useState([]);
+	const aged = [];
 
-	const currentDate = Moment().format("MM - DD - YYYY");
-
-	const fetchAged = async () => {
-		db.collection("data")
-			.where("status", "==", `New`)
-			.get()
-			.then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					console.log(doc.data());
-					// console.log(doc.id, " => ", doc.data());
-				});
-			})
-			.catch((error) => {
-				console.log("Error getting documents: ", error);
-			});
-	};
-
-	useEffect(() => {
-		fetchAged();
-	}, []);
+	useEffect(() => {}, []);
 
 	return (
 		<div
+			onClick={(e) => console.log(aged)}
 			style={{
 				minHeight: "20rem",
 				backgroundColor: "transparent",
@@ -62,7 +44,7 @@ export default function Dash() {
 				Aging Requests
 			</span>
 			<List>
-				{array.map((value, index, text) => (
+				{aged.map((value, index, text) => (
 					<ListItem
 						style={{
 							textAlign: "center",

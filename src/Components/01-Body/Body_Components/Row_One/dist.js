@@ -5,13 +5,13 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 
-import db from "../../../../Util/firebase";
+import db from "./firebase";
 import Moment from "moment";
 
 export default function NewDistribution() {
 	const { register, handleSubmit } = useForm();
 	const [data, setData] = useState();
-	const [change, setChange] = useState(0);
+	const [change, setChange] = useState(2);
 
 	const inputStyle = {
 		marginBottom: "3%",
@@ -35,11 +35,11 @@ export default function NewDistribution() {
 				planName: data.planName,
 				tpaID: data.tpaID,
 				status: "New",
-				entryDate: Date.now(),
+				entryDate: 1119256419934,
 			})
 			.then((docRef) => {
 				alert("Data Successfully Submitted");
-				setChange(2);
+				setChange({ change } + 2);
 			})
 			.catch((error) => {
 				console.error("Error adding document: ", error);
@@ -48,7 +48,6 @@ export default function NewDistribution() {
 
 	return (
 		<Paper
-			onClick={(e) => console.log(data)}
 			style={{
 				minHeight: "15rem",
 				maxHeight: "20rem",

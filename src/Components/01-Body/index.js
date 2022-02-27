@@ -16,6 +16,10 @@ import Chart from "../01-Body/Nav_Components/piechart";
 import Next from "../01-Body/Nav_Components/next";
 import RowOne from "../01-Body/Body_Components/Row_One/main";
 import RowTwo from "../01-Body/Body_Components/Row_Two/main";
+import { useState, useEffect } from "react";
+import Moment from "moment";
+
+import db from "./firebase";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
 	({ theme, open }) => ({
@@ -79,6 +83,73 @@ export default function MainDrawer() {
 		backgroundColor: "#1f2a47",
 	};
 
+	const fetchAged = async () => {
+		db.collection("data")
+			.where("status", "==", `New`)
+			.get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					const entry = doc.data().entryDate;
+					var d1 = Moment().dayOfYear();
+					var d2 = Moment(entry).dayOfYear();
+					if (d1 - d2 > 4) {
+						doc.ref.update({ status: "Aged" });
+					}
+				});
+			})
+			.catch((error) => {
+				console.log("Error getting documents: ", error);
+			});
+	};
+	const [aged, setAged] = React.useState([]);
+	const [news, setNews] = React.useState([]);
+	const [hold, setHold] = React.useState([]);
+	const [complete, setComplete] = React.useState([]);
+	const [confirm, setConfirm] = React.useState(0);
+
+	const passData = async () => {
+		db.collection("data")
+			.get()
+			.then((querySnapshot) => {
+				let aged = [];
+				let newer = [];
+				let hold = [];
+				let completed = [];
+				let dod = "Working";
+				querySnapshot.forEach((doc) => {
+					if (doc.data().status === "Aged") {
+						aged.push(doc.data());
+					}
+					if (doc.data().status === "New") {
+						newer.push(doc.data());
+					}
+					if (doc.data().status === "Hold") {
+						hold.push(doc.data());
+					}
+					if (doc.data().status === "Complete") {
+						completed.push(doc.data());
+					}
+				});
+				return [aged, newer, hold, completed];
+			})
+			.then((aged) => {
+				setAged(aged[0]);
+				setNews(aged[1]);
+				setHold(aged[2]);
+				setComplete(aged[3]);
+			})
+			.catch((error) => {
+				console.log("Error getting documents: ", error);
+			});
+	};
+
+	useEffect(() => {
+		fetchAged();
+		passData();
+	}, [confirm]);
+
+	const [change, setChange] = useState([]);
+
 	return (
 		<Box sx={{ display: "flex" }}>
 			<AppBar
@@ -97,6 +168,9 @@ export default function MainDrawer() {
 						<MenuIcon />
 					</IconButton>
 					<Typography
+						onClick={(e) =>
+							console.log("Saved Data", aged, news, hold, complete)
+						}
 						style={{
 							fontFamily: "fancy, serif",
 							fontWeight: "900",
@@ -181,9 +255,9 @@ export default function MainDrawer() {
 				<DrawerHeader />
 				<div style={spacer} />
 				<Stack>
-					<RowOne />
+					<RowOne aged={aged} />
 					<div style={spacer} />
-					<RowTwo />
+					<RowTwo news={news} hold={hold} complete={complete} />
 				</Stack>
 			</Main>
 		</Box>

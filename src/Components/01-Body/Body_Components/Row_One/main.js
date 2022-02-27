@@ -4,43 +4,22 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import NewDistribution from "./dist";
 import Dash from "./dash";
-import db from "../../../../Util/firebase";
+import db from "./firebase";
 import Moment from "moment";
 import { useState, useEffect } from "react";
 
-export default function RowOne() {
+export default function RowOne(props) {
 	const [array, setArray] = React.useState(["All mail", "Trash", "Spam"]);
 	const [aged, setAged] = React.useState([]);
 
-	function format_Date(date) {
-		return Moment().format("DDD");
-	}
-
-	const fetchAged = async () => {
-		db.collection("data")
-			.where("status", "==", `New`)
-			.get()
-			.then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					const entry = doc.data().entryDate;
-					var d1 = Moment().dayOfYear();
-					var d2 = Moment(entry).dayOfYear();
-					console.log(d1, d2);
-				});
-			})
-			.catch((error) => {
-				console.log("Error getting documents: ", error);
-			});
-	};
-
 	useEffect(() => {
-		fetchAged();
-	}, []);
+		console.log(props.aged);
+	}, [props]);
 
 	return (
 		<Stack direction='row' spacing={1}>
 			<NewDistribution />
-			<Dash />
+			<Dash data={props.data} />
 		</Stack>
 	);
 }
