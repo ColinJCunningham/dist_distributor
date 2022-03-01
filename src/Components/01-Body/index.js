@@ -92,7 +92,7 @@ export default function MainDrawer() {
 					const entry = doc.data().entryDate;
 					var d1 = Moment().dayOfYear();
 					var d2 = Moment(entry).dayOfYear();
-					if (d1 - d2 > 4) {
+					if (d1 - d2 > 10) {
 						doc.ref.update({ status: "Aged" });
 					}
 				});
@@ -106,6 +106,7 @@ export default function MainDrawer() {
 	const [hold, setHold] = React.useState([]);
 	const [complete, setComplete] = React.useState([]);
 	const [confirm, setConfirm] = React.useState(0);
+	const [chartdata, setChartdata] = React.useState([]);
 
 	const passData = async () => {
 		db.collection("data")
@@ -132,11 +133,17 @@ export default function MainDrawer() {
 				});
 				return [aged, newer, hold, completed];
 			})
-			.then((aged) => {
-				setAged(aged[0]);
-				setNews(aged[1]);
-				setHold(aged[2]);
-				setComplete(aged[3]);
+			.then((data) => {
+				setChartdata([
+					data[0].length,
+					data[1].length,
+					data[2].length,
+					data[3].length,
+				]);
+				setAged(data[0]);
+				setNews(data[1]);
+				setHold(data[2]);
+				setComplete(data[3]);
 			})
 			.catch((error) => {
 				console.log("Error getting documents: ", error);
@@ -244,12 +251,12 @@ export default function MainDrawer() {
 					}}
 				/>
 				<div style={{ padding: "1rem", backgroundColor: "#e9f1f7aa" }}>
-					<Chart />
+					<Chart data={chartdata} />
 				</div>
 				<Divider
 					style={{ borderTop: "3px double #bec3c6", color: "#bec3c6" }}
 				/>
-				<Next />
+				<Next complete={complete} />
 			</Drawer>
 			<Main style={{ marginTop: "5%" }} open={open}>
 				<DrawerHeader />

@@ -12,6 +12,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Checkbox from "@mui/material/Checkbox";
 import List from "@mui/material/List";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
@@ -19,14 +20,30 @@ import db from "./firebase";
 import Moment from "moment";
 
 export default function Dash(props) {
-	const [array, setArray] = React.useState(["All mail", "Trash", "Spam"]);
+	const [array, setArray] = React.useState([]);
 	const aged = [];
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		setArray(props.aged);
+	}, [props]);
+
+	const updateStatus = (id, status) => {
+		db.collection("data")
+			.where("ID", "==", id)
+			.get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					doc.ref.update({ status: status });
+				});
+			})
+			.catch((error) => {
+				console.log("Error getting documents: ", error);
+			});
+	};
 
 	return (
 		<div
-			onClick={(e) => console.log(aged)}
+			onClick={(e) => console.log("array:", array)}
 			style={{
 				minHeight: "20rem",
 				backgroundColor: "transparent",
@@ -44,7 +61,7 @@ export default function Dash(props) {
 				Aging Requests
 			</span>
 			<List>
-				{aged.map((value, index, text) => (
+				{Object.entries(array).map((value, index, text) => (
 					<ListItem
 						style={{
 							textAlign: "center",
@@ -52,27 +69,45 @@ export default function Dash(props) {
 							marginBottom: "2%",
 						}}
 						key={index}>
-						<Button
-							style={{
-								fontFamily: "bold, serif",
+						<ListItemText
+							style={{ textAlign: "left" }}
+							primary={array[index].participantName}
+							primaryTypographyProps={{
 								fontWeight: "800",
-								backgroundColor: "#044731",
+								fontSize: "1.4rem",
 							}}
-							variant='contained'>
-							Complete
-						</Button>
-						<ListItemText primary={value} secondary={text} />
-						<Button
-							style={{
-								fontFamily: "bold, serif",
-								border: "2px solid #1f2a47",
-								color: "#1f2a47",
-								fontWeight: "900",
-								backgroundColor: "transparent",
-								padding: ".1%",
-							}}>
-							Check Out
-						</Button>
+							secondary={
+								array[index].tpaID +
+								" - " +
+								array[index].planName +
+								" - " +
+								Moment(array[index].entryDate).format("MM/DD")
+							}
+						/>
+						<ButtonGroup orientation='vertical'>
+							<Button
+								onClick={(e) => updateStatus(array[index].ID, "Hold")}
+								style={{
+									fontFamily: "bold, serif",
+									border: "2px solid #1f2a47",
+									color: "#1f2a47",
+									fontWeight: "900",
+									backgroundColor: "transparent",
+									marginBottom: "3px",
+								}}>
+								Check Out
+							</Button>
+							<Button
+								onClick={(e) => updateStatus(array[index].ID, "Complete")}
+								style={{
+									fontFamily: "bold, serif",
+									fontWeight: "800",
+									backgroundColor: "#044731",
+									color: "white",
+								}}>
+								Completed
+							</Button>
+						</ButtonGroup>
 					</ListItem>
 				))}
 			</List>

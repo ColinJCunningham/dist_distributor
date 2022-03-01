@@ -11,15 +11,16 @@ import { useState, useEffect } from "react";
 export default function RowOne(props) {
 	const [array, setArray] = React.useState(["All mail", "Trash", "Spam"]);
 	const [aged, setAged] = React.useState([]);
+	const [news, setNews] = React.useState([]);
 
 	useEffect(() => {
-		console.log(props.aged);
+		setAged(props.aged);
 	}, [props]);
 
 	return (
 		<Stack direction='row' spacing={1}>
 			<NewDistribution />
-			<Dash data={props.data} />
+			<Dash aged={aged} />
 		</Stack>
 	);
 }

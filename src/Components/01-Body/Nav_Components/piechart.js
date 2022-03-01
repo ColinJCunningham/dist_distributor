@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import {
 	PieChart,
 	Pie,
@@ -20,12 +21,6 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ChartKey from "./list";
 
-const data = [
-	{ name: "New", value: 400 },
-	{ name: "Checked Out", value: 300 },
-	{ name: "Completed", value: 200 },
-	{ name: "Aged Requests", value: 100 },
-];
 const Demo = styled("div")(({ theme }) => ({
 	backgroundColor: theme.palette.background.paper,
 }));
@@ -46,23 +41,68 @@ const renderCustomizedLabel = ({
 	const x = cx + radius * Math.cos(-midAngle * RADIAN);
 	const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-	return (
-		<text
-			x={x}
-			y={y}
-			fill='white'
-			textAnchor={x > cx ? "start" : "end"}
-			dominantBaseline='central'>
-			{`${(percent * 100).toFixed(0)}%` === "0%"
-				? ""
-				: `${(percent * 100).toFixed(0)}%`}
-		</text>
-	);
+	return <text>{`${(percent * 100).toFixed(0)}%`}</text>;
 };
 
-export default function Chart() {
+export default function Chart(props) {
 	const [dense, setDense] = React.useState(false);
 	const [secondary, setSecondary] = React.useState(false);
+	const [sum, setSum] = React.useState();
+	const data = [
+		{ name: "New", value: props.data[1] === 0 ? 0.0 : props.data[1] },
+		{
+			name: "Checked Out",
+			value: props.data[2] === 0 ? 0.0005 : props.data[2],
+		},
+		{ name: "Completed", value: props.data[3] === 0 ? 0.0 : props.data[3] },
+		{
+			name: "Aged Requests",
+			value: props.data[0] === 0 ? 0.0 : props.data[0],
+		},
+	];
+
+	const CustomTooltip = ({ active, payload, label }) => {
+		if (active && payload && payload.length) {
+			return (
+				<div
+					style={{
+						backgroundColor: "white",
+						borderRadius: "5",
+						padding: "2",
+						fontFamily: "big, straight, serif",
+					}}
+					className='custom-tooltip'>
+					<p className='label'>{`${payload[0].name} : ${Math.floor(
+						(payload[0].value / sum) * 100
+					)}%`}</p>
+				</div>
+			);
+		}
+
+		return null;
+	};
+
+	const refiner = (data) => {
+		for (let i = 0; i < data.length; i++) {
+			if (data[i] === 0) {
+				data.push(data[i]);
+			}
+		}
+	};
+
+	const getSum = (data) => {
+		let sum = 0;
+		for (let i = 0; i < data.length; i++) {
+			const element = data[i];
+			sum = sum + element;
+		}
+		setSum(sum);
+	};
+
+	useEffect(() => {
+		getSum(props.data);
+	}, [props]);
+
 	return (
 		<div
 			style={{
@@ -84,11 +124,13 @@ export default function Chart() {
 			<div style={{ width: "100%", height: 300 }}>
 				<ResponsiveContainer>
 					<PieChart width={800} height={400}>
+						<Tooltip content={<CustomTooltip />} />
 						<Pie
 							data={data}
 							outerRadius={120}
-							labelLine={false}
-							label={renderCustomizedLabel}
+							labelLine={true}
+							isAnimationActive={true}
+							label
 							dataKey='value'>
 							{data.map((entry, index) => (
 								<Cell

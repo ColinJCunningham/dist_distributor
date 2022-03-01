@@ -12,6 +12,7 @@ export default function NewDistribution() {
 	const { register, handleSubmit } = useForm();
 	const [data, setData] = useState();
 	const [change, setChange] = useState(2);
+	const [clear, setClear] = useState(" ");
 
 	const inputStyle = {
 		marginBottom: "3%",
@@ -27,6 +28,15 @@ export default function NewDistribution() {
 
 	useEffect(() => {}, [change]);
 
+	const makeId = () => {
+		let ID = "";
+		let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		for (var i = 0; i < 12; i++) {
+			ID += characters.charAt(Math.floor(Math.random() * 36));
+		}
+		return ID;
+	};
+
 	const onSubmit = (data) => {
 		// Add data to the store
 		db.collection("data")
@@ -35,11 +45,13 @@ export default function NewDistribution() {
 				planName: data.planName,
 				tpaID: data.tpaID,
 				status: "New",
-				entryDate: 1119256419934,
+				entryDate: Date.now(),
+				ID: makeId(),
 			})
 			.then((docRef) => {
 				alert("Data Successfully Submitted");
 				setChange({ change } + 2);
+				document.getElementById("distform").reset();
 			})
 			.catch((error) => {
 				console.error("Error adding document: ", error);
@@ -61,6 +73,7 @@ export default function NewDistribution() {
 			elevation={3}
 			square>
 			<form
+				id='distform'
 				style={{
 					padding: "1%",
 				}}
