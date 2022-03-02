@@ -90,9 +90,14 @@ export default function MainDrawer() {
 			.then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
 					const entry = doc.data().entryDate;
+
 					var d1 = Moment().dayOfYear();
 					var d2 = Moment(entry).dayOfYear();
-					if (d1 - d2 > 10) {
+					var y1 = Moment().year();
+					var y2 = Moment(entry).year();
+
+					if (y1 === y2 && d2 - d1 < 10) {
+					} else {
 						doc.ref.update({ status: "Aged" });
 					}
 				});
@@ -107,6 +112,16 @@ export default function MainDrawer() {
 	const [complete, setComplete] = React.useState([]);
 	const [confirm, setConfirm] = React.useState(0);
 	const [chartdata, setChartdata] = React.useState([]);
+
+	const chkdate = (array) => {
+		let num = 0;
+		for (let i = 0; i < array.length; i++) {
+			if (array[i].entryDate <= Date.now()) {
+				num = num + 1;
+			}
+		}
+		return num;
+	};
 
 	const passData = async () => {
 		db.collection("data")
@@ -138,7 +153,7 @@ export default function MainDrawer() {
 					data[0].length,
 					data[1].length,
 					data[2].length,
-					data[3].length,
+					chkdate(data[3]),
 				]);
 				setAged(data[0]);
 				setNews(data[1]);

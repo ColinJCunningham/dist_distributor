@@ -10,93 +10,131 @@ import CommentIcon from "@mui/icons-material/Comment";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Moment from "moment";
+import { useState, useEffect } from "react";
+import db from "../../firebase";
 
 export default function ListTemplate(props) {
 	const primarycolor = props.primary;
 	const secondarycolor = props.secondary;
-	const [array, setArray] = React.useState(["All mail", "Trash", "Spam"]);
+	const [array, setArray] = useState(["All mail", "Trash", "Spam"]);
+	const [num, setNum] = useState(0);
+
+	const updateStatus = async (id, change) => {
+		if (change === "Catch") {
+			console.log("No action");
+		} else {
+			db.collection("data")
+				.where("ID", "==", `${id}`)
+				.get()
+				.then((querySnapshot) => {
+					querySnapshot.forEach((doc) => {
+						console.log(id, change);
+						doc.ref.update({ status: `${change}` });
+					});
+				})
+				.then(() => {
+					setTimeout(() => {
+						window.location.reload();
+					}, 3000);
+				})
+				.catch((error) => {
+					console.log("Error getting documents: ", error);
+				});
+		}
+	};
+	let currentDate = new Date("January 1, 2022 23:15:30");
+	useEffect(() => {}, [num]);
+
 	return (
 		<List style={{ width: "100%" }}>
 			<h2
+				// onClick={(e) => updateStatus(value.ID)}
 				style={{
 					fontFamily: "bold, serif",
 					borderBottom: "2px solid #1f2a47`",
 					textAlign: "left",
 				}}>
-				{props.title}
+				{props.title + ": " + props.data.length}
 			</h2>
-			{array.map((value, index, text) => (
-				<ListItem
-					onClick={(e) => console.log(index)}
-					style={{
-						border: "2px double",
-						borderColor: primarycolor,
-						backgroundColor: `${
-							index % 2 == 0 ? primarycolor : secondarycolor
-						}`,
-						padding: "0 10px 0 10px",
-						color: `${index % 2 == 0 ? secondarycolor : primarycolor}`,
-					}}
-					button
-					key={index}>
-					<ListItemIcon>
+			{props.data
+				.filter((element, index) => index < props.length)
+				.map((value, index, text) => (
+					<ListItem
+						onClick={(e) => updateStatus(value.ID, props.push)}
+						style={{
+							border: "2px double",
+							borderColor: primarycolor,
+							backgroundColor: `${
+								index % 2 == 0 ? primarycolor : secondarycolor
+							}`,
+							padding: "0 10px 0 10px",
+							color: `${index % 2 == 0 ? secondarycolor : primarycolor}`,
+						}}
+						button
+						key={index}>
+						<ListItemIcon>
+							<ListItemText
+								disableTypography
+								style={{
+									textAlign: "left",
+									color: `${index % 2 == 0 ? secondarycolor : primarycolor}`,
+								}}
+								id={`checkbox-list-label-${value}`}
+								primary={
+									<p
+										style={{
+											fontFamily: "bold, serif",
+											fontSize: ".8em",
+											color: `${
+												index % 2 == 0 ? secondarycolor : primarycolor
+											}`,
+										}}>
+										{props.text}
+									</p>
+								}
+								secondary={
+									<Typography
+										style={{
+											fontFamily: "bold, serif",
+											fontSize: ".8em",
+											color: `${
+												index % 2 == 0 ? secondarycolor : primarycolor
+											}`,
+										}}>
+										{Moment(value.entryDate).format("MM/DD")}
+									</Typography>
+								}
+							/>
+						</ListItemIcon>
+
 						<ListItemText
 							disableTypography
 							style={{
-								textAlign: "left",
-								color: `${index % 2 == 0 ? secondarycolor : primarycolor}`,
+								textAlign: "right",
 							}}
 							id={`checkbox-list-label-${value}`}
 							primary={
-								<p
+								<Typography
 									style={{
 										fontFamily: "bold, serif",
-										fontSize: ".8em",
-										color: `${index % 2 == 0 ? secondarycolor : primarycolor}`,
+										fontSize: "1.2em",
 									}}>
-									{props.text}
-								</p>
+									{value.participantName}
+								</Typography>
 							}
 							secondary={
 								<Typography
 									style={{
 										fontFamily: "bold, serif",
 										fontSize: ".8em",
-										color: `${index % 2 == 0 ? secondarycolor : primarycolor}`,
 									}}>
-									10/21/1996
+									{value.planName + " - " + value.tpaID}
 								</Typography>
 							}
 						/>
-					</ListItemIcon>
-
-					<ListItemText
-						disableTypography
-						style={{
-							textAlign: "right",
-						}}
-						id={`checkbox-list-label-${value}`}
-						primary={
-							<Typography
-								style={{
-									fontFamily: "bold, serif",
-									fontSize: "1.2em",
-								}}>
-								MyTitle
-							</Typography>
-						}
-						secondary={
-							<Typography
-								style={{
-									fontFamily: "bold, serif",
-									fontSize: ".8em",
-								}}>
-								MyTitle
-							</Typography>
-						}
-					/>
-				</ListItem>
-			))}
+					</ListItem>
+				))}
 		</List>
 	);
 }

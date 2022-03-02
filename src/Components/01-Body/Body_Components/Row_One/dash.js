@@ -36,6 +36,11 @@ export default function Dash(props) {
 					doc.ref.update({ status: status });
 				});
 			})
+			.then(() => {
+				setTimeout(() => {
+					window.location.reload();
+				}, 3000);
+			})
 			.catch((error) => {
 				console.log("Error getting documents: ", error);
 			});

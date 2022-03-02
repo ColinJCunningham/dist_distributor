@@ -7,6 +7,7 @@ import {
 	Tooltip,
 	ResponsiveContainer,
 	Cell,
+	Label,
 } from "recharts";
 import { styled } from "@mui/material/styles";
 import List from "@mui/material/List";
@@ -28,31 +29,22 @@ const Demo = styled("div")(({ theme }) => ({
 const COLORS = ["#384B80", "#EF8C1A", "#034732", "#AB3428"];
 
 const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-	cx,
-	cy,
-	midAngle,
-	innerRadius,
-	outerRadius,
-	percent,
-	index,
-}: any) => {
-	const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-	const x = cx + radius * Math.cos(-midAngle * RADIAN);
-	const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-	return <text>{`${(percent * 100).toFixed(0)}%`}</text>;
-};
 
 export default function Chart(props) {
 	const [dense, setDense] = React.useState(false);
 	const [secondary, setSecondary] = React.useState(false);
 	const [sum, setSum] = React.useState();
+	const [color, setColor] = React.useState([
+		"#384B80",
+		"#EF8C1A",
+		"#034732",
+		"#AB3428",
+	]);
 	const data = [
 		{ name: "New", value: props.data[1] === 0 ? 0.0 : props.data[1] },
 		{
 			name: "Checked Out",
-			value: props.data[2] === 0 ? 0.0005 : props.data[2],
+			value: props.data[2] === 0 ? 0.0 : props.data[2],
 		},
 		{ name: "Completed", value: props.data[3] === 0 ? 0.0 : props.data[3] },
 		{
@@ -128,14 +120,21 @@ export default function Chart(props) {
 						<Pie
 							data={data}
 							outerRadius={120}
-							labelLine={true}
 							isAnimationActive={true}
 							label
 							dataKey='value'>
 							{data.map((entry, index) => (
 								<Cell
 									key={`cell-${index}`}
-									fill={COLORS[index % COLORS.length]}
+									onMouseEnter={(e) =>
+										setColor((color) => {
+											const newArray = [...color];
+											newArray[index] = "#CBD081";
+											return newArray;
+										})
+									}
+									onMouseLeave={(e) => setColor(COLORS)}
+									fill={color[index % color.length]}
 								/>
 							))}
 						</Pie>
