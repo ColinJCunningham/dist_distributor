@@ -60,12 +60,12 @@ export default function NewDistribution() {
 
 	return (
 		<Paper
+			id='pap'
 			style={{
 				minHeight: "15rem",
-				maxHeight: "20rem",
+
 				backgroundColor: "#4e5e88",
 				minWidth: "20%",
-				maxWidth: "45%",
 				margin: "2% 2% 2% 0",
 				borderRadius: "10px",
 				color: "#fbf5f3",

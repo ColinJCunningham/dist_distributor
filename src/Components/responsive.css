@@ -1,0 +1,27 @@
+
+  #pap{
+    max-width: 70%;
+  }
+
+
+
+
+@media only screen and (max-width: 1200px) { 
+
+  /* Section One List   */
+  #list{
+    max-width: 70%;
+  }
+   #pap{
+    max-width: 100%;
+  }
+}
+
+
+@media only screen and (max-width: 950px) { 
+
+  /* Section One List   */
+  #list{
+    max-width: 100%;
+  }
+}

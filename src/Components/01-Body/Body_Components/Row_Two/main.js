@@ -8,7 +8,7 @@ export default function RowTwo(props) {
 	return (
 		<Stack
 			style={{ marginTop: "3%" }}
-			direction={{ xs: "column", sm: "row" }}
+			direction={{ xs: "column", sm: "column", md: "column", lg: "row" }}
 			spacing={{ xs: 1, sm: 2, md: 4 }}>
 			<ListTemplate
 				title='New Requests'

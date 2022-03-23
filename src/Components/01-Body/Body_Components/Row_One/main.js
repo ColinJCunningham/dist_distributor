@@ -18,7 +18,9 @@ export default function RowOne(props) {
 	}, [props]);
 
 	return (
-		<Stack direction='row' spacing={1}>
+		<Stack
+			direction={{ xs: "column", sm: "column", md: "column", lg: "row" }}
+			spacing={1}>
 			<NewDistribution />
 			<Dash aged={aged} />
 		</Stack>

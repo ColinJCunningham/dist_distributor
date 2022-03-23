@@ -1,23 +1,17 @@
 import * as React from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import CommentIcon from "@mui/icons-material/Comment";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
 import Moment from "moment";
 import { useState, useEffect } from "react";
 import db from "../../firebase";
+import "../../../responsive.css";
 
 export default function ListTemplate(props) {
 	const primarycolor = props.primary;
 	const secondarycolor = props.secondary;
-	const [array, setArray] = useState(["All mail", "Trash", "Spam"]);
 	const [num, setNum] = useState(0);
 
 	const updateStatus = async (id, change) => {
@@ -47,7 +41,7 @@ export default function ListTemplate(props) {
 	useEffect(() => {}, [num]);
 
 	return (
-		<List style={{ width: "100%" }}>
+		<List id='list' style={{ minWidth: "fit-content" }}>
 			<h2
 				// onClick={(e) => updateStatus(value.ID)}
 				style={{
@@ -66,10 +60,10 @@ export default function ListTemplate(props) {
 							border: "2px double",
 							borderColor: primarycolor,
 							backgroundColor: `${
-								index % 2 == 0 ? primarycolor : secondarycolor
+								index % 2 === 0 ? primarycolor : secondarycolor
 							}`,
 							padding: "0 10px 0 10px",
-							color: `${index % 2 == 0 ? secondarycolor : primarycolor}`,
+							color: `${index % 2 === 0 ? secondarycolor : primarycolor}`,
 						}}
 						button
 						key={index}>
@@ -78,7 +72,7 @@ export default function ListTemplate(props) {
 								disableTypography
 								style={{
 									textAlign: "left",
-									color: `${index % 2 == 0 ? secondarycolor : primarycolor}`,
+									color: `${index % 2 === 0 ? secondarycolor : primarycolor}`,
 								}}
 								id={`checkbox-list-label-${value}`}
 								primary={
@@ -87,7 +81,7 @@ export default function ListTemplate(props) {
 											fontFamily: "bold, serif",
 											fontSize: ".8em",
 											color: `${
-												index % 2 == 0 ? secondarycolor : primarycolor
+												index % 2 === 0 ? secondarycolor : primarycolor
 											}`,
 										}}>
 										{props.text}
@@ -99,7 +93,7 @@ export default function ListTemplate(props) {
 											fontFamily: "bold, serif",
 											fontSize: ".8em",
 											color: `${
-												index % 2 == 0 ? secondarycolor : primarycolor
+												index % 2 === 0 ? secondarycolor : primarycolor
 											}`,
 										}}>
 										{Moment(value.entryDate).format("MM/DD")}

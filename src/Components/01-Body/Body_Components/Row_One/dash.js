@@ -52,7 +52,7 @@ export default function Dash(props) {
 			style={{
 				minHeight: "20rem",
 				backgroundColor: "transparent",
-				width: "50%",
+				width: "100%",
 				margin: "2% 2% 2% 5%",
 				borderRadius: "10px",
 			}}>

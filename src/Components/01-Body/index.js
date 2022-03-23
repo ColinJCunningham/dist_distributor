@@ -67,7 +67,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function MainDrawer() {
-	const [open, setOpen] = React.useState(true);
+	const [open, setOpen] = React.useState(
+		window.innerWidth > 659 ? true : false
+	);
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -173,7 +175,9 @@ export default function MainDrawer() {
 	const [change, setChange] = useState([]);
 
 	return (
-		<Box sx={{ display: "flex" }}>
+		<Box
+			onClick={(e) => console.log(window.innerWidth)}
+			sx={{ display: "flex" }}>
 			<AppBar
 				style={{
 					backgroundColor: "#4e5e88",
@@ -190,9 +194,6 @@ export default function MainDrawer() {
 						<MenuIcon />
 					</IconButton>
 					<Typography
-						onClick={(e) =>
-							console.log("Saved Data", aged, news, hold, complete)
-						}
 						style={{
 							fontFamily: "fancy, serif",
 							fontWeight: "900",
